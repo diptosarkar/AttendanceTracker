@@ -146,7 +146,8 @@ router.get("/api/students/", (req, res, next) => {
             "data": data,
             "id" : this.lastID
         })
-        res.render("attend", {"welcome": "Thank you for marking your attendace for today's class ", "date": today});
+        //res.type('html');
+        //res.render("attend", {"welcome": "Thank you for marking your attendace for today's class ", "date": today});
     });
   });
 
