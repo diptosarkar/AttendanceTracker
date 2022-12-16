@@ -12,6 +12,11 @@ var app = express();
 //Require the database
 var db = require("./database.js");
 
+//Middleware to handle POST request fro adding new users
+var bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
