@@ -108,4 +108,28 @@ router.delete("/api/students/:id", (req, res, next) => {
   });
 })
 
+//Mark attendance using GET
+router.get("/api/attend/:id", (req, res, next) => {
+  var now = new Date();
+  var today = now.toISOString();
+  var data = {
+      id: req.params.id,
+      date: today,
+      attend: 'TRUE'
+  }
+  var sql ='INSERT INTO attendance (id, date, attendance) VALUES (?,?,?)'
+  var params =[data.id, data.date, data.attend]
+  db.run(sql, params, function (err, result) {
+      if (err){
+          res.status(400).json({"error": err.message})
+          return;
+      }
+      res.json({
+          "message": "success",
+          "data": data,
+          "id" : this.lastID
+      })
+  });
+});
+
 module.exports = router;

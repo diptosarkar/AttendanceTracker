@@ -21,10 +21,26 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
             if (err) {
                 // Table already created
             }else{
+                console.log('Student table created.');
                 // Table just created, creating some rows
                 var insert = 'INSERT INTO student (id, name, email) VALUES (?,?,?)'
                 db.run(insert, [1, "admin","admin@example.com"])
                 db.run(insert, [2, "Dipto Sarkar","dipto.sarkar@carleton.ca"])
+            }
+        });  
+        //Add table for attendance
+        db.run(`CREATE TABLE attendance (
+            id INTEGER NOT NULL,
+            date text, 
+            attendance Boolean DEFAULT TRUE,
+            FOREIGN KEY(id) REFERENCES student(id)
+            )`,
+        (err) => {
+            if (err) {
+                // Table already created
+            }else{
+                // Table just created
+                console.log('Attendance table created.');
             }
         });  
     }
