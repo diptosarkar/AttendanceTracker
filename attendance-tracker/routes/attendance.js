@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var db = require("../database.js");
+var users = ["dpt"];
+var pass = ["pass"];
 
 router.get('/', function(req, res, next) {
     res.send('respond with a resource');
@@ -101,6 +103,30 @@ router.get("/api/students/", (req, res, next) => {
   
   //Mark attendance using GET
   router.get("/api/attend/:id", (req, res, next) => {
+    /*Password control*/
+    const reject = () => {
+    res.setHeader("www-authenticate", "Basic");
+    res.sendStatus(401);
+    };
+
+    const authorization = req.headers.authorization;
+
+    if (!authorization) {
+    return reject();
+    }
+
+    const [username, password] = Buffer.from(
+    authorization.replace("Basic ", ""),
+    "base64"
+    )
+    .toString()
+    .split(":");
+
+    if (!(users.includes(username) && pass.includes(password))) {
+    return reject();
+    }
+    /*Password end*/
+
     var now = new Date();
     var today = now.toISOString();
     var data = {
@@ -115,18 +141,42 @@ router.get("/api/students/", (req, res, next) => {
             res.status(400).json({"error": err.message})
             return;
         }
-        /*res.json({
+        res.json({
             "message": "success",
             "data": data,
             "id" : this.lastID
-        })*/
-        res.render("attend", {"welcome": "Thank you for marking your attendace for todays class ", "date": today});
+        })
+        res.render("attend", {"welcome": "Thank you for marking your attendace for today's class ", "date": today});
     });
   });
 
   //Retrieve attendance data using GET
   router.get("/api/getAttendance",(req, res, next) => {
-    var sql ='SELECT attendance.id, student.name, COUNT(*) FROM attendance RIGHT OUTER JOIN student where student.id=attendance.id GROUP BY attendance.id'
+    /*Password control*/
+    const reject = () => {
+        res.setHeader("www-authenticate", "Basic");
+        res.sendStatus(401);
+      };
+    
+      const authorization = req.headers.authorization;
+    
+      if (!authorization) {
+        return reject();
+      }
+    
+      const [username, password] = Buffer.from(
+        authorization.replace("Basic ", ""),
+        "base64"
+      )
+        .toString()
+        .split(":");
+    
+      if (!(users.includes(username) && pass.includes(password))) {
+        return reject();
+      }
+      /*Password end*/
+
+    var sql ='SELECT attendance.id, student.name, COUNT(*) AS TotalClassesAttended FROM attendance RIGHT OUTER JOIN student where student.id=attendance.id GROUP BY attendance.id'
     var params =[]
     var params = []
     db.all(sql, params, (err, rows) => {
