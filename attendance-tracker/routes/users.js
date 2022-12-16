@@ -124,11 +124,12 @@ router.get("/api/attend/:id", (req, res, next) => {
           res.status(400).json({"error": err.message})
           return;
       }
-      res.json({
+      /*res.json({
           "message": "success",
           "data": data,
           "id" : this.lastID
-      })
+      })*/
+      res.render("attend", {"title": "Thank you for marking your attendace for todays class ", "date": today});
   });
 });
 
