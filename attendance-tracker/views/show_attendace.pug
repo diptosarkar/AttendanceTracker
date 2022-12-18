@@ -1,0 +1,10 @@
+extends layout
+
+block content
+
+    h2 Attendance Details till Date 
+
+    div(style='margin-left:20px;margin-top:20px')
+    h4 Attendance
+    each val in dt
+        #{val.name}

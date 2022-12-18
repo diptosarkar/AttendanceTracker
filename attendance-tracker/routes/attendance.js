@@ -192,7 +192,15 @@ router.get("/api/students/", (req, res, next) => {
             "data":rows,
             "count": rows.length
         })
+        /*
+        if(err){
+          return next(err);
+        }
+        //Successful So render
+        res.render("show_attendace",{dt: rows});*/ //The view does not work yet
+        
       });
+      
   });
   
   module.exports = router;
