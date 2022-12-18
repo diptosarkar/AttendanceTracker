@@ -116,15 +116,16 @@ router.get("/api/students/", (req, res, next) => {
     db.run(sql, params, function (err, result) {
         if (err){
             res.status(400).json({"error": err.message})
+            //res.render("attend", {"welcome": "Error ", "date": today});
             return;
         } 
-        //res.json({
-        //    "message": "success",
-        //    "data": data,
-        //    "id" : this.lastID
-        //})
+        res.json({
+            "message": "success",
+            "data": data,
+            "id" : this.lastID
+        })
         
-        res.render("attend", {"welcome": "Thank you for marking your attendance for today's class ", "date": today});
+        //res.render("attend", {"welcome": "Thank you for marking your attendance for today's class ", "date": today});
     });
   });
 
