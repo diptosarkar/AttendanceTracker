@@ -115,17 +115,19 @@ router.get("/api/students/", (req, res, next) => {
     var params =[data.id, data.date, data.attend]
     db.run(sql, params, function (err, result) {
         if (err){
-            res.status(400).json({"error": err.message})
-            //res.render("attend", {"welcome": "Error ", "date": today});
-            return;
+            //res.status(400).json({"error": err.message})
+            //return;  //Either these 2 lines or the lines after work
+            const err = new Error("Attendace could not be marked");
+            err.status = 404;
+            return next(err);
         } 
-        res.json({
+        /*res.json({
             "message": "success",
             "data": data,
             "id" : this.lastID
-        })
+        })*/
         
-        //res.render("attend", {"welcome": "Thank you for marking your attendance for today's class ", "date": today});
+        res.render("attend", {"date": today});
     });
   });
 
