@@ -103,30 +103,7 @@ router.get("/api/students/", (req, res, next) => {
   
   //Mark attendance using GET
   router.get("/api/attend/:id", (req, res, next) => {
-    /*Password control*/
-    const reject = () => {
-    res.setHeader("www-authenticate", "Basic");
-    res.sendStatus(401);
-    };
-
-    const authorization = req.headers.authorization;
-
-    if (!authorization) {
-    return reject();
-    }
-
-    const [username, password] = Buffer.from(
-    authorization.replace("Basic ", ""),
-    "base64"
-    )
-    .toString()
-    .split(":");
-
-    if (!(users.includes(username) && pass.includes(password))) {
-    return reject();
-    }
-    /*Password end*/
-
+    
     var now = new Date();
     var today = now.toISOString();
     var data = {
@@ -140,14 +117,14 @@ router.get("/api/students/", (req, res, next) => {
         if (err){
             res.status(400).json({"error": err.message})
             return;
-        }
-        res.json({
-            "message": "success",
-            "data": data,
-            "id" : this.lastID
-        })
-        //res.type('html');
-        //res.render("attend", {"welcome": "Thank you for marking your attendace for today's class ", "date": today});
+        } 
+        //res.json({
+        //    "message": "success",
+        //    "data": data,
+        //    "id" : this.lastID
+        //})
+        
+        res.render("attend", {"welcome": "Thank you for marking your attendance for today's class ", "date": today});
     });
   });
 
